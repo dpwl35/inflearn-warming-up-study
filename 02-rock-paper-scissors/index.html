@@ -44,12 +44,15 @@
     }
 
     .wrap {
+      position: relative;
       width: 500px;
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      border-radius: 20px;
     }
 
     .game {
-      background-color: rgb(242, 244, 246);
-      border-radius: 20px;
+      background-color: #f2f4f6;
+
     }
 
     h1 {
@@ -62,6 +65,14 @@
       padding: 1rem;
       text-align: center;
       font-size: 1.125rem;
+      font-weight: 700;
+    }
+
+    .count {
+      width: 100%;
+      background-color: #fff;
+      text-align: center;
+      padding: 1rem 0;
       font-weight: 700;
     }
 
@@ -80,13 +91,18 @@
     }
 
     .player>div>p:first-of-type {
-      padding: 1rem 0;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      color: #1c69e6;
+      margin-bottom: 1rem;
+      background-color: #f2f4f6;
     }
 
     .player>div>div {
       width: 100px;
       height: 100px;
-      background-color: rgb(242, 244, 246);
+      border: 1px solid #f2f4f6;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -126,6 +142,62 @@
       border-radius: 50%;
       cursor: pointer;
     }
+
+    .popup {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      width: 80%;
+      height: 80%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+      flex-direction: column;
+      padding: 1rem;
+      backdrop-filter: blur(5px);
+      border-radius: 20px;
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      border: 1px solid #f2f4f6;
+    }
+
+    .popup-area {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+    }
+
+    .popup-area p {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      z-index: 10;
+    }
+
+    .popup-area input {
+      padding: 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      border: 2px solid #ddd;
+      text-align: center;
+    }
+
+    .popup-area button {
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .popup-area.restart {
+      display: none;
+    }
   </style>
 </head>
 
@@ -133,27 +205,160 @@
   <div class="wrap">
     <h1>가위, 바위, 보</h1>
     <div class="game">
-      <div class="result">🎉 <span>컴퓨터</span>가 이겼어요!</div>
+      <div class="result">🎉 <span>-</span></div>
+      <div class="count">남은 게임 횟수 : <span>-</span></div>
       <div class="player">
         <div class="player-me">
           <p>🙂 Me</p>
-          <div>결과</div>
-          <p>0</p>
+          <div class="select">?</div>
+          <p class="win">0</p>
         </div>
-        <div class="player-coumter">
+        <div class="player-computer">
           <p>💻 Computer</p>
-          <div>결과</div>
-          <p>0</p>
+          <div class="select">?</div>
+          <p class="win">0</p>
         </div>
       </div>
 
       <div class="select">
-        <div>✌</div>
-        <div>✊</div>
-        <div>✋</div>
+        <div class="select-item" data-value="✌">✌</div>
+        <div class="select-item" data-value="✊">✊</div>
+        <div class="select-item" data-value="✋">✋</div>
       </div>
     </div>
+
+    <div class="popup">
+      <div class="popup-area start">
+        <p>몇 판을 플레이할까요?</p>
+        <input class="count-val" type="number" />
+        <button class="start">Go</button>
+      </div>
+
+      <div class="popup-area restart">
+        <p>결과</p>
+        <p class="win">-</p>
+        <button class="restart">다시하기</button>
+      </div>
+    </div>
+
   </div>
+
+  <script>
+    const startSection = document.querySelector('.popup-area.start'); // 게임 시작 팝업 영역
+    const restartSection = document.querySelector('.popup-area.restart'); // 다시하기 팝업 영역
+    const startButton = document.querySelector('.popup-area.start .start'); // 게임 시작 버튼
+    const gameCount = document.querySelector('.count span'); // 남은 게임 횟수 표시
+    const gameCountInput = document.querySelector('.count-val'); // 입력한 게임 횟수
+    const popup = document.querySelector('.popup'); // 팝업 전체 영역
+
+    const selectItems = document.querySelectorAll('.select-item'); // 가위, 바위, 보 선택 요소
+    const playerMeSelect = document.querySelector('.player-me .select'); // 플레이어의 선택 표시
+    const playerComputerSelect = document.querySelector('.player-computer .select'); // 컴퓨터의 선택 표시
+
+    const gameResult = document.querySelector('.result span'); // 결과 표시
+    const playerMeWin = document.querySelector('.player-me .win'); // 플레이어 승리 횟수
+    const playerComputerWin = document.querySelector('.player-computer .win'); // 컴퓨터 승리 횟수
+    const winnerText = document.querySelector('.popup-area.restart .win'); // 승리 결과 텍스트
+    const restartButton = document.querySelector('.popup-area.restart .restart'); // 다시하기 버튼
+
+    let win = [0, 0];
+    let remainingGames = 0;
+    const options = ['✌', '✊', '✋'];
+
+    // 게임 초기화 함수
+    function resetGame() {
+      win = [0, 0];
+      remainingGames = 0;
+      playerMeWin.textContent = '0';
+      playerComputerWin.textContent = '0';
+      playerMeSelect.textContent = '?';
+      playerComputerSelect.textContent = '?';
+      gameCount.textContent = '0';
+      gameResult.textContent = '-';
+    }
+
+    // 게임 시작 함수
+    function startGame() {
+      const inputVal = parseInt(gameCountInput.value, 10);
+      if (isNaN(inputVal) || inputVal <= 0) {
+        alert("유효한 게임 횟수를 입력해주세요.");
+        return;
+      }
+      remainingGames = inputVal;
+      gameCount.textContent = remainingGames;
+      popup.style.display = 'none';
+    }
+
+    // 승자 
+    function determineWinner(player, computer) {
+      if (player === computer) {
+        gameResult.textContent = '무승부 입니다!';
+      } else if (
+        (player === '✌' && computer === '✋') ||
+        (player === '✊' && computer === '✌') ||
+        (player === '✋' && computer === '✊')
+      ) {
+        gameResult.textContent = '플레이어가 이겼어요!';
+        win[0]++;
+        playerMeWin.textContent = win[0];
+      } else {
+        gameResult.textContent = '컴퓨터가 이겼어요!';
+        win[1]++;
+        playerComputerWin.textContent = win[1];
+      }
+    }
+
+    // 게임이 끝났을 때 처리
+    function endGame() {
+      popup.style.display = 'block'; // 팝업을 다시 표시
+      startSection.style.display = 'none'; // 게임 시작 팝업 숨기기
+      restartSection.style.display = 'flex'; // 다시하기 팝업 표시
+
+      if (win[0] > win[1]) {
+        winnerText.textContent = '플레이어가 이겼어요!';
+      } else if (win[0] < win[1]) {
+        winnerText.textContent = '컴퓨터가 이겼어요!';
+      } else {
+        winnerText.textContent = '무승부 입니다!';
+      }
+    }
+
+    // 플레이어가 선택했을 때 처리
+    function handlePlayerChoice(playerChoice) {
+      const computerChoice = options[Math.floor(Math.random() * options.length)];
+      playerMeSelect.textContent = playerChoice;
+      playerComputerSelect.textContent = computerChoice;
+      determineWinner(playerChoice, computerChoice);
+
+      remainingGames--;
+      gameCount.textContent = remainingGames;
+
+      if (remainingGames === 0) {
+        endGame();
+      }
+    }
+
+    // 이벤트 리스너 설정
+    startButton.addEventListener('click', () => {
+      startGame();
+    });
+
+    selectItems.forEach((item) => {
+      item.addEventListener('click', () => {
+        if (remainingGames > 0) {
+          const playerChoice = item.getAttribute('data-value');
+          handlePlayerChoice(playerChoice);
+        }
+      });
+    });
+
+    restartButton.addEventListener('click', () => {
+      resetGame();
+      popup.style.display = 'block';
+      startSection.style.display = 'flex';
+      restartSection.style.display = 'none';
+    });
+  </script>
 </body>
 
 </html>
