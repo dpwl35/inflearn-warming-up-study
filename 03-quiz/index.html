@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>퀴즈</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* Remove default margin */
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    p,
+    figure,
+    blockquote,
+    dl,
+    dd {
+      margin: 0;
+    }
+
+    html,
+    body {
+      overflow-x: hidden;
+      max-width: 100vw;
+      height: 100%;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      list-style: none;
+    }
+
+    button {
+      border: none;
+    }
+
+    .wrap {
+      width: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .number {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      background-color: #4979ff;
+      width: 25px;
+      height: 25px;
+      text-align: center;
+      border-radius: 50%;
+      color: #fff;
+    }
+
+    .quiz {
+      font-size: 1.5rem;
+      word-break: keep-all;
+      font-weight: 700;
+      text-align: center;
+      width: 300px;
+      margin-bottom: 2rem;
+    }
+
+    .answer-item {
+      padding: 1rem;
+      width: 200px;
+      text-align: center;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+      background-color: #eee;
+    }
+
+    .answer-item button {
+      width: 100%;
+      height: 100%;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <h1>Quiz</h1>
+    <div class="number">1</div>
+    <div class="quiz">
+      다음 중 JavaScript의 데이터 타입이 아닌 것은 무엇일까요?
+    </div>
+    <ul class="answer">
+      <li class="answer-item">
+        <button type="button">Number</button>
+      </li>
+      <li class="answer-item">
+        <button type="button">String</button>
+      </li>
+      <li class="answer-item">
+        <button type="button">Boolean</button>
+      </li>
+      <li class="answer-item">
+        <button type="button">Character</button>
+      </li>
+    </ul>
+    <div>정답</div>
+  </div>
+</body>
+
+</html>
