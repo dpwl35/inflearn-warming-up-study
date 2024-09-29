@@ -1,14 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>food-menu</title>
+
+  <!--font-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Sarina&display=swap" rel="stylesheet">
+  <!--css-->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+  <main class="wrap">
+    <header class="header">
+      <h1 class="logo">
+        Slow,Cali
+      </h1>
+    </header>
+    <div class="tab">
+      <ul class="tab-area">
+        <li class="tab-item active">Poke</li>
+        <li class="tab-item">Bowl</li>
+        <li class="tab-item">Salad Wrap</li>
+        <li class="tab-item">Side</li>
+      </ul>
+      <div class="tab-body">
+        <!-- poke -->
+        <ul id="poke" class="tab-content active"></ul>
 
+        <!-- bowl -->
+        <ul id="bowl" class="tab-content"></ul>
+
+        <!-- wrap -->
+        <ul id="wrap" class="tab-content"></ul>
+
+        <!-- side -->
+        <ul id="side" class="tab-content"></ul>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="main.js"></script>
 </body>
 
 </html>
