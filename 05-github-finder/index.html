@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>퀴즈</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* Remove default margin */
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    p,
+    figure,
+    blockquote,
+    dl,
+    dd {
+      margin: 0;
+    }
+
+    html,
+    body {
+      overflow-x: hidden;
+      max-width: 100vw;
+      height: 100%;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      font-size: 15px;
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      list-style: none;
+    }
+
+    button {
+      border: none;
+    }
+
+    .wrap {
+      width: 900px;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+      border-radius: 8px;
+    }
+
+    h1 {
+      text-align: left;
+      margin-bottom: 1rem;
+      font-size: 24px;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e5e8eb;
+    }
+
+    .search {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      background-color: #f2f4f6;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    .input-area {
+      display: flex;
+      width: 100%;
+      align-items: center
+    }
+
+    input {
+      border: none;
+      background-color: #fff;
+      padding: 1rem;
+      flex: 1;
+      border-radius: 8px;
+    }
+
+    label {
+      font-weight: 700;
+      margin-right: 16px;
+    }
+
+    .toasts-message {
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+    }
+
+    .toasts-message.add {
+      color: #03b26c;
+      background: #f0faf6;
+    }
+
+    .toasts-message.delete {
+      color: #f04452;
+      background: #fee;
+    }
+
+    .user {
+      display: flex;
+      margin-top: 2rem;
+      border-top: 2px dashed #e5e8eb;
+      border-bottom: 1px dotted #e5e8eb;
+      padding: 2rem 1rem;
+      gap: 1rem;
+    }
+
+    .user-profile {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-profile-img {
+      width: 200px;
+      height: 200px;
+      background-color: #f1f1f1;
+      margin-bottom: 1rem;
+    }
+
+    .user-profile-link {
+      width: 200px;
+      background-color: #3182f6;
+      padding: 0.75rem;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .user-info {
+      flex: 1;
+    }
+
+    .user-info ul:first-of-type {
+      display: flex;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .user-info ul:first-of-type li {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      background: #e8f3ff;
+    }
+
+    .user-info ul:last-of-type li {
+      padding: 0.5rem 0;
+    }
+
+    .project {
+      margin-top: 1rem;
+    }
+
+    .project h2 {
+      margin-bottom: 1rem;
+    }
+
+    .project-area {
+      width: 100%;
+    }
+
+    .project-list {
+      background: #f9fafb;
+      padding: 1rem;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .project-name {
+      color: #3182f6;
+      font-size: 16px;
+    }
+
+    .project-info {
+      display: flex;
+      gap: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <h1>GitHub Finder</h1>
+
+    <div class="toasts">
+      <div class="toasts-message delete">User not found</div>
+    </div>
+
+    <div class="search">
+      <h2>Search GitHub Users</h2>
+      <p>Enter a username to fetch a user profile and repos</p>
+      <input type="text" placeholder="GitHub Username..." />
+    </div>
+
+    <div class="user">
+
+      <div class="user-profile">
+        <div class="user-profile-img"></div>
+        <a href="#" class="user-profile-link">View Profile</a>
+      </div>
+
+      <div class="user-info">
+        <ul>
+          <li class="user-repos">Public Repos : <span>-</span></li>
+          <li class="user-gists">Public Gists : <span>-</span></li>
+          <li class="user-followers">Followers : <span>-</span></li>
+          <li class="user-following">Following : <span>-</span></li>
+        </ul>
+
+        <ul>
+          <li class="user-company">Company : <span>-</span></li>
+          <li class="user-Website">Website/Blog : <span>-</span></li>
+          <li class="user-location">Location : <span>-</span></li>
+          <li class="user-member">Member Since : <span>-</span></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="project">
+      <h2>Latest Repos</h2>
+
+      <ul class="project-area">
+        <li class="project-list">
+          <div class="project-name">프로젝트1</div>
+          <div class="project-info">
+            <div class="project-tag">Stars : <span>1</span></div>
+            <div class="project-tag">Watchers : <span>1</span></div>
+            <div class="project-tag">Forks : <span>1</span></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+</body>
+
+</html>
