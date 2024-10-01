@@ -40,9 +40,9 @@
     body {
       position: relative;
       display: flex;
-      align-items: center;
       justify-content: center;
       font-size: 15px;
+      align-items: flex-start;
     }
 
     ul,
@@ -64,6 +64,7 @@
       flex-direction: column;
       padding: 1.5rem;
       border-radius: 8px;
+      margin-top: 3rem;
     }
 
     h1 {
@@ -110,7 +111,7 @@
     .table {
       margin-top: 2rem;
       border-top: 2px dashed #e5e8eb;
-      border-bottom: 1px dotted #e5e8eb;
+
     }
 
     .thead {
@@ -121,6 +122,7 @@
       position: relative;
       display: flex;
       padding-right: 20px;
+      border-bottom: 1px dotted #eee;
     }
 
     .th,
@@ -167,20 +169,20 @@
     <h1>📚 내가 읽은 책</h1>
 
     <div class="toasts">
-      <div class="toasts-message add">책이 추가되었습니다.</div>
-      <div class="toasts-message delete">책이 삭제되었습니다.</div>
+      <!-- <div class="toasts-message add">책이 추가되었습니다.</div>
+      <div class="toasts-message delete">책이 삭제되었습니다.</div> -->
     </div>
 
     <div class="add">
       <div class="input-area">
         <label>책 이름</label>
-        <input type="text" />
+        <input class="book-title" type="text" />
       </div>
       <div class="input-area">
         <label>책 저자</label>
-        <input type="text" />
+        <input class="book-author" type="text" />
       </div>
-      <button class="button" type="button">제출</button>
+      <button class="button submit" type="button">제출</button>
     </div>
 
     <div class="table">
@@ -191,15 +193,99 @@
         </div>
       </div>
       <div class="tbody">
-        <div class="tr">
-          <div class="td">마이너리티 디자인</div>
-          <div class="td">사와다 도모히로</div>
+        <!-- <div class="tr">
+          <div class="td">책 이름</div>
+          <div class="td">책 저자</div>
           <button type="button" class="delete">X</button>
-        </div>
+        </div> -->
       </div>
     </div>
 
   </div>
+
+  <script>
+    const bookTitle = document.querySelector('.book-title');
+    const bookAuthor = document.querySelector('.book-author');
+    const submitButton = document.querySelector('button.submit');
+    const tableTbody = document.querySelector('.table .tbody');
+
+    const toastsArea = document.querySelector('.toasts');
+
+    // 제출 & 삭제 메시지 출력 
+    function showToast(actionType) {
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('toasts-message');
+
+      if (actionType === 'add') {
+        messageDiv.classList.add('add');
+        messageDiv.textContent = '책이 추가되었습니다.';
+      } else if (actionType === 'delete') {
+        messageDiv.classList.add('delete');
+        messageDiv.textContent = '책이 삭제되었습니다.';
+      }
+
+      toastsArea.appendChild(messageDiv);
+
+      setTimeout(() => {
+        toastsArea.removeChild(messageDiv);
+      }, 1000);
+    }
+
+    //책 삭제 이벤트 
+    function handleDelete(button, rowElement) {
+      button.addEventListener('click', function () {
+        tableTbody.removeChild(rowElement);
+
+        showToast('delete');  // 삭제 메시지 출력
+      });
+    }
+
+    // 항목(tr)을 생성하는 함수
+    function createTableRow(title, author) {
+      //tr 추가
+      const newTr = document.createElement('div');
+      newTr.classList.add('tr');
+
+      //td 추가 이름 + 저자
+      const titleTd = document.createElement('div');
+      titleTd.classList.add('td');
+      titleTd.textContent = title;
+      const authorTd = document.createElement('div');
+      authorTd.classList.add('td');
+      authorTd.textContent = author;
+
+      //삭제 버튼 추가 
+      const deleteButton = document.createElement('button');
+      deleteButton.type = 'button';
+      deleteButton.classList.add('delete');
+      deleteButton.textContent = 'X';
+
+      // 삭제 버튼 분리
+      handleDelete(deleteButton, newTr);
+
+      newTr.appendChild(titleTd);
+      newTr.appendChild(authorTd);
+      newTr.appendChild(deleteButton);
+
+      tableTbody.appendChild(newTr);
+    }
+
+    // 책 추가 이벤트
+    submitButton.addEventListener('click', function () {
+      const titleValue = bookTitle.value;
+      const authorValue = bookAuthor.value;
+
+      if (titleValue && authorValue) {
+        createTableRow(titleValue, authorValue);
+        showToast('add');  // 추가 메시지 출력
+
+        bookTitle.value = '';
+        bookAuthor.value = '';
+      } else {
+        alert('책 이름과 저자 모두 입력해야 합니다.');
+      }
+    });
+  </script>
 
 </body>
 
