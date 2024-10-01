@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>퀴즈</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* Remove default margin */
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    p,
+    figure,
+    blockquote,
+    dl,
+    dd {
+      margin: 0;
+    }
+
+    html,
+    body {
+      overflow-x: hidden;
+      max-width: 100vw;
+      height: 100%;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      font-size: 15px;
+      align-items: center;
+    }
+
+    button {
+      border: none;
+    }
+
+    .wrap {
+      width: 500px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      padding: 1.5rem;
+      border-radius: 8px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 24px;
+    }
+
+    .result {
+      position: relative;
+      font-weight: 700;
+      padding: 1rem;
+      background-color: #e8f3ff;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-size: 18px;
+      border: 1px solid #3182f6;
+    }
+
+    .result::after {
+      content: '복사하기';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 1rem;
+      font-weight: 400;
+      font-size: 14px;
+      padding: 0.125rem 0.5rem;
+      background-color: #3182f6;
+      color: #fff;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .create {
+      border-top: 2px dashed #e5e8eb;
+      padding-top: 1rem;
+    }
+
+    .create-input {
+      margin-bottom: 1rem;
+    }
+
+    .create-input input {
+      width: 100%;
+    }
+
+    .create-check {
+      display: flex;
+      margin-bottom: 1rem;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .create-check p {
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .create-button {
+      width: 100%;
+      background-color: #3182f6;
+      padding: 0.75rem;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    input {
+      border: none;
+      background-color: #f2f4f6;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    .guidelines {
+      background-color: #f2f4f6;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: 12px;
+      color: #191f28;
+      padding-left: 2.5rem;
+      font-size: 14px;
+    }
+
+
+    .toasts-message {
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+    }
+
+    .toasts-message.add {
+      color: #03b26c;
+      background: #f0faf6;
+    }
+
+    .toasts-message.delete {
+      color: #f04452;
+      background: #fee;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <h1>🔒 비밀번호 생성하기 🔒</h1>
+
+    <div class="result">생성된 비밀번호</div>
+
+    <div class="create">
+      <div class="create-input">
+        <input type="number" placeholder="생성할 비밀번호 자릿수를 입력해주세요." />
+      </div>
+
+      <div class="create-check">
+        <p>포함하고 싶은 문자 : </p>
+        <div class="create-checkbox">
+          <input id="numbers" type="checkbox" class="checkbox">
+          <label for="numbers" class="label">Numbers (0-9)</label>
+        </div>
+        <div class="create-checkbox">
+          <input id="small" type="checkbox" class="checkbox">
+          <label for="small" class="label">Small Letters (a-z)</label>
+        </div>
+        <div class="create-checkbox">
+          <input id="capital" type="checkbox" class="checkbox">
+          <label for="capital" class="label">Capital Letters (A-Z)</label>
+        </div>
+        <div class="create-checkbox">
+          <input id="symbols" type="checkbox" class="checkbox">
+          <label for="symbols" class="label">Symbols(@, !, #, $, &, %)</label>
+        </div>
+      </div>
+
+      <button class="create-button" type="button">생성하기</button>
+    </div>
+
+    <ul class="guidelines">
+      <li>최소 길이는 5입니다.</li>
+      <li>최대 길이는 70입니다.</li>
+      <li>강력한 비밀번호는 10~16자여야 합니다.</li>
+    </ul>
+
+  </div>
+
+  <script>
+
+  </script>
+
+</body>
+
+</html>
