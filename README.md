@@ -12,10 +12,11 @@
    - OOP, 비동기
 5. Github Finder
    - OOP, 비동기
+
+### 2주차 - JavaScript, React (10.07 ~ 10.14)
+
 6. 비밀번호 생성
    - Iterator, Generator, Design Pattern
 7. 타이핑 테스트
-
-### 2주차 - JavaScript, React (10.07 ~ 10.14)
 
 ### 3주차 - React (10.15 ~ 10.17)
