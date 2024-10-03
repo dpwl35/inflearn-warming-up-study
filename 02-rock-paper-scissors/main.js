@@ -20,7 +20,7 @@ let remainingGames = 0;
 const options = ['✌', '✊', '✋'];
 
 // 게임 초기화 함수
-function resetGame() {
+const resetGame = () => {
   win = [0, 0];
   remainingGames = 0;
   playerMeWin.textContent = '0';
@@ -29,7 +29,7 @@ function resetGame() {
   playerComputerSelect.textContent = '?';
   gameCount.textContent = '0';
   gameResult.textContent = '-';
-}
+};
 
 // 게임 시작 함수
 function startGame() {
@@ -45,21 +45,19 @@ function startGame() {
 
 // 승자
 function determineWinner(player, computer) {
-  if (player === computer) {
-    gameResult.textContent = '무승부 입니다!';
-  } else if (
-    (player === '✌' && computer === '✋') ||
-    (player === '✊' && computer === '✌') ||
-    (player === '✋' && computer === '✊')
-  ) {
-    gameResult.textContent = '플레이어가 이겼어요!';
-    win[0]++;
-    playerMeWin.textContent = win[0];
-  } else {
-    gameResult.textContent = '컴퓨터가 이겼어요!';
-    win[1]++;
-    playerComputerWin.textContent = win[1];
-  }
+  gameResult.textContent =
+    player === computer
+      ? '무승부 입니다!'
+      : (player === '✌' && computer === '✋') ||
+        (player === '✊' && computer === '✌') ||
+        (player === '✋' && computer === '✊')
+      ? '플레이어가 이겼어요!'
+      : '컴퓨터가 이겼어요!';
+
+  gameResult.textContent.includes('플레이어')
+    ? (win[0]++, (playerMeWin.textContent = win[0]))
+    : gameResult.textContent.includes('컴퓨터') &&
+      (win[1]++, (playerComputerWin.textContent = win[1]));
 }
 
 // 게임이 끝났을 때 처리
@@ -68,47 +66,47 @@ function endGame() {
   startSection.style.display = 'none'; // 게임 시작 팝업 숨기기
   restartSection.style.display = 'flex'; // 다시하기 팝업 표시
 
-  if (win[0] > win[1]) {
-    winnerText.textContent = '플레이어가 이겼어요!';
-  } else if (win[0] < win[1]) {
-    winnerText.textContent = '컴퓨터가 이겼어요!';
-  } else {
-    winnerText.textContent = '무승부 입니다!';
-  }
+  winnerText.textContent =
+    win[0] > win[1]
+      ? '플레이어가 이겼어요!'
+      : win[0] < win[1]
+      ? '컴퓨터가 이겼어요!'
+      : '무승부 입니다!';
 }
 
-// 플레이어가 선택했을 때 처리
-function handlePlayerChoice(playerChoice) {
-  const computerChoice = options[Math.floor(Math.random() * options.length)];
-  playerMeSelect.textContent = playerChoice;
-  playerComputerSelect.textContent = computerChoice;
-  determineWinner(playerChoice, computerChoice);
+// 클로저를 사용하여 플레이어 선택 처리
+const handlePlayerChoice = (playerChoice) => {
+  return function () {
+    const computerChoice = options[Math.floor(Math.random() * options.length)];
+    playerMeSelect.textContent = playerChoice;
+    playerComputerSelect.textContent = computerChoice;
+    determineWinner(playerChoice, computerChoice);
 
-  remainingGames--;
-  gameCount.textContent = remainingGames;
+    remainingGames--;
+    gameCount.textContent = remainingGames;
 
-  if (remainingGames === 0) {
-    endGame();
-  }
-}
+    if (remainingGames === 0) {
+      endGame();
+    }
+  };
+};
 
 // 이벤트 리스너 설정
-startButton.addEventListener('click', () => {
-  startGame();
-});
+startButton.addEventListener('click', startGame.bind(this));
 
 selectItems.forEach((item) => {
-  item.addEventListener('click', () => {
-    if (remainingGames > 0) {
-      const playerChoice = item.getAttribute('data-value');
-      handlePlayerChoice(playerChoice);
-    }
-  });
+  item.addEventListener(
+    'click',
+    handlePlayerChoice(item.getAttribute('data-value'))
+  );
 });
 
-restartButton.addEventListener('click', () => {
-  resetGame();
-  popup.style.display = 'block';
-  startSection.style.display = 'flex';
-  restartSection.style.display = 'none';
-});
+restartButton.addEventListener(
+  'click',
+  function () {
+    resetGame();
+    popup.style.display = 'block';
+    startSection.style.display = 'flex';
+    restartSection.style.display = 'none';
+  }.bind(this)
+);
