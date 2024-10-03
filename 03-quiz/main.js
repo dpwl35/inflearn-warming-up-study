@@ -52,6 +52,18 @@ function renderQuiz(index) {
   numberCurrent.textContent = currentQuestionIndex + 1;
 }
 
+const handleAnswer = (correctAnswer, explanation) => (selectAnswer) => {
+  quizResult.classList.add('active');
+
+  if (selectAnswer == correctAnswer) {
+    quizMessage.textContent = '🎉 정답입니다. 🎉';
+  } else {
+    quizMessage.textContent = '❌ 오답입니다. ❌';
+  }
+
+  quizExplanation.textContent = explanation;
+};
+
 // 정답 선택
 quizContainer.addEventListener('click', (event) => {
   if (event.target.tagName === 'BUTTON') {
@@ -68,17 +80,8 @@ quizContainer.addEventListener('click', (event) => {
     const correctAnswer = quizQuestions[currentQuestionIndex].answer;
     const explanation = quizQuestions[currentQuestionIndex].explanation;
 
-    quizResult.classList.add('active');
-
-    if (selectAnswer == correctAnswer) {
-      quizMessage.textContent = '🎉 정답입니다. 🎉';
-    } else {
-      quizMessage.textContent = '❌ 오답입니다. ❌';
-    }
-
-    quizExplanation.textContent = explanation;
-
-    // Next 버튼 활성화
+    const checkAnswer = handleAnswer(correctAnswer, explanation);
+    checkAnswer(selectAnswer);
     nextButton.classList.add('active');
   }
 });
