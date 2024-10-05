@@ -100,13 +100,40 @@
 
     .print {
       width: 100%;
-      height: 250px;
+
       padding: 1rem 0;
       font-size: 24px;
       border-bottom: 1px solid #222;
     }
 
+    .print-text {
+      padding: 0 1rem;
+    }
+
+    .print-text .complete {
+      color: #03b26c;
+    }
+
+    .print-text .error {
+      color: #f04452;
+    }
+
+    .typing {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 1rem;
+      font-size: 24px;
+      border: none;
+      resize: none;
+      background-color: #fff;
+    }
+
+    .typing:disabled {
+      background-color: #fff;
+    }
+
     .popup {
+      display: none;
       position: absolute;
       width: 300px;
       top: 50%;
@@ -114,6 +141,10 @@
       transform: translate(-50%, -50%);
       background-color: #fff;
       padding: 1rem;
+    }
+
+    .popup.active {
+      display: block;
     }
 
     .popup h2 {
@@ -128,6 +159,16 @@
     .popup .result-item {
       border-right: none;
       background-color: #f4f4f4;
+    }
+
+    .start {
+      width: 100%;
+      background-color: #222;
+      color: #fff;
+      margin-top: 1rem;
+      padding: 1rem;
+      width: 100%;
+      cursor: pointer;
     }
 
     .retry {
@@ -150,45 +191,48 @@
       <ul class="result-area">
         <li class="result-item">
           <p>errors</p>
-          <p class="errors">0</p>
+          <p class="errors">-</p>
         </li>
         <li class="result-item">
           <p>time</p>
-          <p class="time">18s</p>
+          <p><span class="time">-</span>s</p>
         </li>
         <li class="result-item">
           <p>% accuracy</p>
-          <p class="accuracy">100</p>
+          <p class="accuracy">-</p>
         </li>
       </ul>
     </div>
 
     <div class="print">
-      여기에 예문
+      <div class="print-text">타이핑 텍스트</div>
+      <textarea class="typing" placeholder="여기에 타이핑 하세요." disabled></textarea>
     </div>
+
+    <button type="button" class="start">시작하기</button>
 
     <div class="popup">
       <h2>타이핑 결과</h2>
       <ul class="result-area">
         <li class="result-item">
           <p>WPM</p>
-          <p class="errors">0</p>
+          <p class="wpm">-</p>
         </li>
         <li class="result-item">
           <p>CPM</p>
-          <p class="errors">0</p>
+          <p class="cpm">-</p>
         </li>
         <li class="result-item">
           <p>errors</p>
-          <p class="errors">0</p>
+          <p class="errors">-</p>
         </li>
         <li class="result-item">
           <p>time</p>
-          <p class="time">18s</p>
+          <p><span class="time">-</span>s</p>
         </li>
         <li class="result-item">
           <p>% accuracy</p>
-          <p class="accuracy">100</p>
+          <p class="accuracy">-</p>
         </li>
       </ul>
 
