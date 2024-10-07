@@ -6,46 +6,47 @@ const charSets = {
   symbols: '@!#$&%',
 };
 
-// 비밀번호 생성기 Generator 함수
-function* passwordGenerator(options) {
-  const selectedSets = [];
+// 비밀번호 생성기 클래스
+class PasswordGenerator {
+  constructor(options) {
+    this.options = options;
+    this.selectedSets = [];
 
-  if (options.numbers) selectedSets.push(charSets.numbers);
-  if (options.small) selectedSets.push(charSets.small);
-  if (options.capital) selectedSets.push(charSets.capital);
-  if (options.symbols) selectedSets.push(charSets.symbols);
+    // 선택된 문자 집합 초기화
+    if (options.numbers) this.selectedSets.push(charSets.numbers);
+    if (options.small) this.selectedSets.push(charSets.small);
+    if (options.capital) this.selectedSets.push(charSets.capital);
+    if (options.symbols) this.selectedSets.push(charSets.symbols);
+  }
 
-  while (true) {
-    const randomSet =
-      selectedSets[Math.floor(Math.random() * selectedSets.length)];
-    yield randomSet.charAt(Math.floor(Math.random() * randomSet.length));
+  // 비밀번호 생성
+  generate(length) {
+    let password = '';
+
+    // 각 문자 집합에서 하나씩 추가
+    this.selectedSets.forEach((set) => {
+      password += set.charAt(Math.floor(Math.random() * set.length));
+    });
+
+    // 나머지 자리에 대해 랜덤 문자 추가
+    while (password.length < length) {
+      const randomSet =
+        this.selectedSets[Math.floor(Math.random() * this.selectedSets.length)];
+      password += randomSet.charAt(
+        Math.floor(Math.random() * randomSet.length)
+      );
+    }
+
+    // 비밀번호를 섞어서 반환
+    return shufflePassword(password);
   }
 }
 
-// 비밀번호 생성 함수 (Factory Pattern 활용)
-function generatePassword(length, options) {
-  const generator = passwordGenerator(options);
-  let password = '';
-
-  // 각 선택된 문자 집합에서 최소 하나의 문자를 추가
-  const selectedSets = [];
-  if (options.numbers) selectedSets.push(charSets.numbers);
-  if (options.small) selectedSets.push(charSets.small);
-  if (options.capital) selectedSets.push(charSets.capital);
-  if (options.symbols) selectedSets.push(charSets.symbols);
-
-  // 먼저 각 문자 집합에서 하나씩 선택하여 추가
-  selectedSets.forEach((set) => {
-    password += set.charAt(Math.floor(Math.random() * set.length));
-  });
-
-  // 나머지 자리에 대해 랜덤 문자 추가
-  for (let i = password.length; i < length; i++) {
-    password += generator.next().value;
+// Factory 클래스
+class PasswordFactory {
+  static createPasswordGenerator(options) {
+    return new PasswordGenerator(options);
   }
-
-  // 비밀번호를 섞어서 반환
-  return shufflePassword(password);
 }
 
 // 비밀번호 셔플 함수
@@ -106,7 +107,9 @@ createButton.addEventListener('click', () => {
   }
 
   // 비밀번호 생성
-  const generatedPassword = generatePassword(length, options);
+  const generator = PasswordFactory.createPasswordGenerator(options);
+  const generatedPassword = generator.generate(length);
+
   passwordElement.textContent = generatedPassword;
 });
 
