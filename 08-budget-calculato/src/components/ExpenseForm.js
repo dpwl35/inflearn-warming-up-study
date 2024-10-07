@@ -10,9 +10,9 @@ export default function ExpenseForm({
   setAmount,
 }) {
   return (
-    <form onSubmit={handleSubmit} className='mt-8 flex'>
+    <form onSubmit={handleSubmit} className='mt-8 flex gap-2'>
       <select
-        className='w-[17%] rounded-lg border border-gray-500 px-2 py-1'
+        className='w-[17%]  border-b border-gray-500  py-1'
         value={expense}
         onChange={(e) => setExpense(e.target.value)}
       >
@@ -23,14 +23,14 @@ export default function ExpenseForm({
         <option value='기타'>기타</option>
       </select>
       <input
-        className='w-[34%] rounded-lg border border-gray-500 px-2 py-1'
+        className='w-[34%] border-b border-gray-500 px-2 py-1'
         type='text'
         placeholder='내역'
         value={details}
         onChange={(e) => setDetails(e.target.value)}
       />
       <input
-        className='w-[34%] rounded-lg border border-gray-500 px-2 py-1'
+        className='w-[34%] border-b border-gray-500 px-2 py-1'
         type='number'
         placeholder='비용'
         value={amount}
