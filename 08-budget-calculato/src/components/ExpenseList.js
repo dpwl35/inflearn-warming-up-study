@@ -10,6 +10,7 @@ export default function ExpenseList({
 }) {
   const handleRmove = () => {
     setExpenseData([]);
+    setTotalAmount(0);
     showMessageWithColor('delete');
   };
 
