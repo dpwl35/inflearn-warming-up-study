@@ -1,6 +1,5 @@
 header {
   width: 100%;
-  background: #1a1d29;
   height: 72px;
 }
 nav {
@@ -12,17 +11,18 @@ nav {
 }
 .menu {
   display: flex;
-  height: 100%;
   align-items: center;
 }
-.menu .menu-item {
+.menu-item {
   padding: 16px 18px;
   height: 100%;
   color: #fff;
   display: flex;
   align-items: center;
 }
-
+.menu-item:first-of-type {
+  padding: 0 !important;
+}
 .menu .menu-item img {
   height: 100%;
   width: auto;
