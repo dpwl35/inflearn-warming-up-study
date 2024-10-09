@@ -18,5 +18,17 @@
 6. 비밀번호 생성
    - Iterator, Generator, Design Pattern
 7. 타이핑 테스트
+8. 예산 계산기
+   - React,Tailwind
+9. 디즈니 플러스
+   - React,styled-components, TMDB API
 
-### 3주차 - React (10.15 ~ 10.17)
+### 3주차 - React, Next (10.15 ~ 10.17)
+
+10. 포켓몬 도감 앱
+
+- React TDD 경험하기
+
+11. 퀴즈 게임
+
+- Next.js, TypeScript
