@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import axios from '../../api/axios';
 
 export default function DetailPage() {
   const { movieId } = useParams();
+  const location = useLocation();
   const [movie, setMovie] = useState({});
+  const imageUrl = location.state?.imageUrl; // 전달된 imageUrl 사용
 
   useEffect(() => {
     async function fetchData() {
@@ -20,7 +22,10 @@ export default function DetailPage() {
     <section>
       <img
         className='modal__poster-img'
-        src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
+        src={
+          imageUrl ||
+          `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
+        }
         alt='poster'
       />
     </section>
