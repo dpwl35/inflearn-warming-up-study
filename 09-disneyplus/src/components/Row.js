@@ -13,6 +13,7 @@ export default function Row({ title, id, fetchUrl, isLargeRow }) {
   const fetchMovieData = async () => {
     try {
       const request = await axios.get(fetchUrl);
+      console.log('Fetched data for:', title, request.data.results);
       setMovies(request.data.results);
     } catch (error) {
       console.error('Failed to fetch movies', error);
