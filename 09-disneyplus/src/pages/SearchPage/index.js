@@ -48,7 +48,11 @@ export default function SearchPage() {
             return (
               <div className='movie' key={movie.id}>
                 <div
-                  onClick={() => navigate(`/${movie.id}`)}
+                  onClick={() =>
+                    navigate(`/${movie.id}`, {
+                      state: { imageUrl: movieImageUrl },
+                    })
+                  }
                   className='movie__column-poster'
                 >
                   <img
@@ -67,7 +71,7 @@ export default function SearchPage() {
       <section className='no-results'>
         <div className='no-results__text'>
           <p>
-            찾고자하는 검색어"{debouncedSearchTerm}"에 맞는 영화가 없습니다.
+            찾고자하는 검색어 "{debouncedSearchTerm}"에 맞는 영화가 없습니다.
           </p>
         </div>
       </section>
