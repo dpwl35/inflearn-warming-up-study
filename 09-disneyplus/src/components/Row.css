@@ -1,0 +1,96 @@
+.row {
+  width: 100%;
+  margin-top: 10px;
+}
+.row-title {
+  color: #cacaca;
+  font-size: 20px;
+  padding-left: calc(var(--dynamic-padding) + 10px);
+}
+.slider {
+  width: 100%;
+  position: relative;
+}
+
+.slider-area {
+  padding-top: 10px;
+  padding-left: var(--dynamic-padding);
+  display: flex;
+  position: relative;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none; /* IE 및 Edge에서 스크롤바 숨기기 */
+}
+.slider-area::-webkit-scrollbar {
+  display: none; /* Chrome, Safari에서 스크롤바 숨기기 */
+}
+
+.poster {
+  width: 20%;
+  min-width: 20%;
+  padding: 10px;
+  transition: all 0.2s ease-in-out;
+}
+.poster:hover {
+  cursor: pointer;
+}
+
+.poster img {
+  width: 100%;
+  margin-bottom: 20px;
+  transform: all 0.2s;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.69) 0px 12px 15px -5px,
+    rgba(0, 0, 0, 0.73) 0px 8px 5px -5px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.poster:hover img {
+  transform: scale(1.1);
+  outline: 3px solid #eee;
+}
+
+.slider-arrow_left,
+.slider-arrow_right {
+  position: absolute;
+  color: #fff;
+  font-size: 20px;
+  top: -10px;
+  height: 100%;
+  width: var(--dynamic-padding);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.slider-arrow_left {
+  left: 0;
+}
+
+.slider-arrow_left .arrow {
+  transform: rotate(180deg);
+}
+
+.slider-arrow_right {
+  right: 0;
+}
+
+.arrow {
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 1;
+  height: 100%;
+  opacity: 0;
+  transition: all 0.2s;
+}
+.arrow svg {
+  width: calc(100% - 22px);
+}
+.arrow:hover {
+  opacity: 1;
+}
