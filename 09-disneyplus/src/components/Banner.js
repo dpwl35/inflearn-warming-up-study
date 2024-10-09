@@ -46,24 +46,22 @@ export default function Banner() {
             alt='movie.name'
           />
         </div>
-        {/* <div className='banner__contents'>
-          <h1 className='banner__title'>
+        <div className='banner-contents'>
+          <h2 className='banner-title'>
             {movie.title || movie.name || movie.original_name}
-          </h1>
+          </h2>
 
-          <div className='banner__buttons'>
+          <div className='banner-buttons'>
             <button
-              className='banner__button play'
+              className='banner-button_play'
               onClick={() => setidClicked(true)}
             >
               Play
             </button>
-            <button className='banner__button info'>More Information</button>
           </div>
 
-          <h1 className='banner__description'>{movie.overview}</h1>
-        </div> */}
-        <div className='banner--fadeBottom' />
+          <h1 className='banner-description'>{movie.overview}</h1>
+        </div>
       </div>
     );
   } else {

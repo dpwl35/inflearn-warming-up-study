@@ -1,11 +1,13 @@
 .banner {
+  position: relative;
   width: calc(100% - 2 * var(--dynamic-padding));
   margin: 0 auto;
   aspect-ratio: 1781 / 607;
   padding: 10px;
-  margin-bottom: 22px;
+  margin-bottom: 80px;
 }
 .banner-area {
+  position: absolute;
   width: 100%;
   height: 100%;
   box-shadow: rgba(0, 0, 0, 0.69) 0px 26px 30px -10px,
@@ -17,9 +19,32 @@
 .banner-area:hover {
   outline: 3px solid #eee;
 }
+.banner-contents {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem;
+}
 
 .banner img {
   width: 100%;
   border-radius: 4px;
   background-size: cover;
+}
+.banner-title {
+  color: #fff;
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+.banner-description {
+  max-width: 500px;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 400;
+  margin-top: 20px;
 }
