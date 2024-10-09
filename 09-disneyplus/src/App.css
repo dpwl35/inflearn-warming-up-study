@@ -33,3 +33,33 @@ body {
   background: url('https://static-assets.bamgrid.com/product/disneyplus/images/background.dc67869b698f6c927aae59c68d9dda46.png');
   background-size: cover;
 }
+
+.wrap,
+#root,
+.login {
+  width: 100%;
+  height: 100%;
+}
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.login h1 {
+  color: #fff;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.login-logo {
+  width: 180px;
+}
+.login button {
+  width: 82px;
+  height: 50px;
+  border: 1px solid silver;
+  color: #f9f9f9;
+  background-color: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+}
