@@ -10,10 +10,20 @@ export default function MainPage() {
 
       <Row title='Trending Now' id='TN' fetchUrl={requests.fetchTrending} />
       <Row
-        title='NETFLIX ORIGINALS'
-        id='NO'
-        fetchUrl={requests.fetchNetflixOriginals}
+        title='Top Rated'
+        id='TR'
+        fetchUrl={requests.fetchTopRated}
         isLargeRow
+      />
+      <Row
+        title='Action Movies'
+        id='AM'
+        fetchUrl={requests.fetchActionMovies}
+      />
+      <Row
+        title='Comedy Movies'
+        id='CM'
+        fetchUrl={requests.fetchComedyMovies}
       />
     </div>
   );
