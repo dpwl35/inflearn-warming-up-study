@@ -1,55 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
+import { useFetchPokemonDetail } from '../hooks/useFetchPokemonDetail'; // 커스텀 훅 임포트
 import requests from '../api/requests';
 import Modal from '../components/Modal';
 
 export default function Detail() {
   const { id: pokemonName } = useParams();
-  const [pokemon, setPokemon] = useState(null);
-  const [description, setDescription] = useState('');
-  const [damageRelations, setDamageRelations] = useState(null); // 데미지 관계 상태
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림/닫힘 상태
+  const { pokemon, description, damageRelations } =
+    useFetchPokemonDetail(pokemonName); // 커스텀 훅 사용
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchPokemonDetail = async () => {
-      try {
-        // 포켓몬 기본 정보 요청 (포켓몬 이름으로 데이터 가져오기)
-        const response = await axios.get(
-          requests.fetchPokemonByName(pokemonName)
-        );
-        setPokemon(response.data);
-
-        // 포켓몬 설명
-        const speciesResponse = await axios.get(
-          requests.fetchPokemonSpecies(pokemonName)
-        );
-        const flavorTextEntry = speciesResponse.data.flavor_text_entries.find(
-          (entry) => entry.language.name === 'en'
-        );
-
-        setDescription(
-          flavorTextEntry
-            ? flavorTextEntry.flavor_text
-            : 'No description available.'
-        );
-
-        // 포켓몬 타입에 따른 데미지 관계 가져오기
-        if (response.data.types.length > 0) {
-          const typeName = response.data.types[0].type.name; // 첫 번째 타입 선택
-          const typeResponse = await axios.get(
-            requests.fetchPokemonType(typeName)
-          );
-          setDamageRelations(typeResponse.data.damage_relations); // 데미지 관계 설정
-        }
-      } catch (error) {
-        console.error('포켓몬 데이터를 가져오는 중 오류 발생:', error);
-      }
-    };
-
-    fetchPokemonDetail();
-  }, [pokemonName]);
 
   if (!pokemon) {
     return <div>Loading...</div>;
