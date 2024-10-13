@@ -121,3 +121,26 @@ header ul li {
   margin-top: 20px;
   text-align: center;
 }
+
+.test-area {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.test-area button {
+  cursor: pointer;
+  background-color: #e8f3ff;
+  color: #3182f6;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+}
+.state,
+.test {
+  width: 100%;
+}
+select {
+  width: 100%;
+}
