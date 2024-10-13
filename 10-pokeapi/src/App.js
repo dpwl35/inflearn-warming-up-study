@@ -11,10 +11,7 @@ function App() {
       <Nav />
       <div className='wrap mt-[72px]'>
         <Routes>
-          {/* 메인 페이지 경로 */}
           <Route path='/' element={<Main />} />
-
-          {/* 포켓몬 상세 페이지 경로 */}
           <Route path='/:id' element={<Detail />} />
         </Routes>
       </div>
