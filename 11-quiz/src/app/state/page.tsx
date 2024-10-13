@@ -9,7 +9,7 @@ export default function StatePage() {
   };
 
   return (
-    <div>
+    <div className='state'>
       <select onChange={handleSelectChange}>
         <option value=''>과목을 선택하세요</option>
         <option value='math'>수학</option>
