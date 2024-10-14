@@ -1,39 +1,104 @@
-.App {
-  text-align: center;
+ul {
+  list-style: none;
+  margin: 0;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-float infinite 3s ease-in-out;
-  }
-}
-
-.App-header {
-  min-height: 100vh;
+nav ul {
   display: flex;
+  gap: 16px;
+  border-bottom: 1px solid #eee;
+  justify-content: space-between;
+  padding: 16px 32px;
+}
+a {
+  display: block;
+  text-decoration: none;
+  align-items: center;
+  color: #222;
+}
+
+.products {
+  width: 100%;
+}
+.products h2 {
+  text-align: center;
+  padding: 24px 0;
+}
+.products-category {
+  display: flex;
+  gap: 16px;
+  margin: 0 auto;
+  justify-content: center;
+}
+.products-category li {
+  border: 1px solid #666;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.products-category li:hover {
+  background-color: #f1f1f1;
+}
+.products-list {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  margin-top: 24px;
+}
+.products-area {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.products-item {
+  width: calc(25% - (3rem / 4));
+  display: flex;
+  justify-content: flex-start;
   flex-direction: column;
   align-items: center;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 6px;
+}
+
+.products-item .img {
+  width: 100%;
+  height: 150px;
+
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  align-items: center;
+  margin-bottom: 16px;
+}
+.products-item .name {
+  font-weight: 700;
+}
+.products-item .area {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+.products-item .area button {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
 }
 
-.App-link {
-  color: rgb(112, 76, 182);
+.products-item.men .img {
+  background-color: #e2ffeb;
 }
 
-@keyframes App-logo-float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
+.products-item.women .img {
+  background-color: #fcefff;
+}
+
+.products-item.jewelry .img {
+  background-color: #fff5d5;
+}
+
+.products-item.electronics .img {
+  background-color: #f1f1f1;
 }
