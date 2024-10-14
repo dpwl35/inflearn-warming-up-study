@@ -94,16 +94,17 @@ header ul li {
   flex-direction: column;
   gap: 24px;
   width: 100%;
+  max-width: 800px;
 }
 
-.question > li {
+.question .question-area {
   border-width: 8px 2px 2px 2px;
   border-style: solid;
   border-color: rgba(0, 27, 55, 0.1);
   padding: 1rem;
   border-radius: 8px;
 }
-.question > li p {
+.question .question-area p {
   font-size: 18px;
   margin-bottom: 10px;
   font-weight: 600;
@@ -111,23 +112,31 @@ header ul li {
 .question input {
   margin-right: 8px;
 }
+.question label {
+  cursor: pointer;
+}
 .question-item li {
   padding: 0.25rem 0;
 }
-
 .result {
   background-color: rgba(0, 27, 55, 0.1);
   padding: 0.5rem;
   margin-top: 20px;
   text-align: center;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 4px;
+  display: none;
 }
-
+.result.active {
+  display: block;
+}
 .test-area {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
-
 .test-area button {
   cursor: pointer;
   background-color: #e8f3ff;
