@@ -5,7 +5,7 @@ interface Question {
   id: number;
   question: string;
   choices: string[];
-  answer: number; // 정답의 인덱스
+  answer: number; // 정답
 }
 
 export default function QuizPage() {
