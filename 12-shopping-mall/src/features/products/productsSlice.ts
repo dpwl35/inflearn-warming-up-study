@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 // Product 타입 정의
 export interface Product {
+  id: string;
   category: string;
   name: string;
   price: number;
