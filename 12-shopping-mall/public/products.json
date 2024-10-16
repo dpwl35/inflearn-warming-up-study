@@ -1,113 +1,132 @@
 [
   {
+    "id": "1",
     "category": "women",
     "name": "Heels",
     "price": 120000,
     "description": "Elegant heels for formal events."
   },
   {
+    "id": "2",
     "category": "jewelry",
     "name": "Diamond Ring",
     "price": 5000000,
     "description": "A luxurious ring with a high-quality diamond."
   },
   {
+    "id": "3",
     "category": "jewelry",
     "name": "Gold Necklace",
     "price": 2000000,
     "description": "A premium necklace made from pure gold."
   },
   {
+    "id": "4",
     "category": "jewelry",
     "name": "Silver Earrings",
     "price": 150000,
     "description": "Simple earrings made from sterling silver."
   },
   {
+    "id": "5",
     "category": "women",
     "name": "Handbag",
     "price": 250000,
     "description": "A luxury handbag made from high-quality materials."
   },
   {
+    "id": "6",
     "category": "electronics",
     "name": "Smartphone A",
     "price": 1200000,
     "description": "A high-performance smartphone with the latest technology."
   },
   {
+    "id": "7",
     "category": "men",
     "name": "Sports Shoes",
     "price": 120000,
     "description": "Comfortable and lightweight sports shoes."
   },
   {
+    "id": "8",
     "category": "women",
     "name": "Cardigan",
     "price": 90000,
     "description": "A cozy and soft cardigan for cool weather."
   },
   {
+    "id": "9",
     "category": "men",
     "name": "Jeans",
     "price": 80000,
     "description": "Durable and fashionable jeans."
   },
   {
+    "id": "10",
     "category": "women",
     "name": "Blouse",
     "price": 70000,
     "description": "A fashionable blouse for everyday wear."
   },
   {
+    "id": "11",
     "category": "electronics",
     "name": "Tablet C",
     "price": 850000,
     "description": "A lightweight yet powerful tablet with amazing capabilities."
   },
   {
+    "id": "12",
     "category": "women",
     "name": "Skirt",
     "price": 60000,
     "description": "A stylish skirt that matches any outfit."
   },
   {
+    "id": "13",
     "category": "jewelry",
     "name": "Platinum Pendant",
     "price": 1800000,
     "description": "A stylish pendant made from platinum."
   },
   {
+    "id": "14",
     "category": "men",
     "name": "Casual Shirt",
     "price": 50000,
     "description": "A comfortable and stylish casual shirt."
   },
   {
+    "id": "15",
     "category": "electronics",
     "name": "Laptop B",
     "price": 2500000,
     "description": "A portable and powerful laptop offering excellent performance."
   },
   {
+    "id": "16",
     "category": "men",
     "name": "Leather Jacket",
     "price": 300000,
     "description": "A high-quality leather jacket for men."
   },
   {
+    "id": "17",
     "category": "electronics",
     "name": "Wireless Earbuds D",
     "price": 200000,
     "description": "Wireless earbuds with great sound quality and long battery life."
   },
   {
+    "id": "18",
     "category": "women",
     "name": "Evening Dress",
     "price": 150000,
     "description": "An elegant evening dress for special occasions."
   },
   {
+    "id": "19",
     "category": "jewelry",
     "name": "Pearl Bracelet",
     "price": 300000,
