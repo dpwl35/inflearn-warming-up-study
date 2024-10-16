@@ -1,11 +1,13 @@
 // src/app/store.ts
 import { configureStore } from '@reduxjs/toolkit';
 import productsReducer from '../features/products/productsSlice';
+import cartReducer from '../features/cart/cartSlice';
 
 // 스토어 설정
 export const store = configureStore({
   reducer: {
     products: productsReducer,
+    cart: cartReducer,
   },
 });
 
