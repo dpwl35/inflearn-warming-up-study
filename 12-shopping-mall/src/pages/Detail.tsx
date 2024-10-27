@@ -14,16 +14,20 @@ const Detail: React.FC = () => {
   );
 
   // 해당 상품이 장바구니에 있는지 확인
-  const isInCart = useSelector((state: RootState) =>
-    state.cart.items.some((item) => item.id === id)
+  const isInCart = useSelector(
+    (state: RootState) => state.cart.items.some((item) => item.id === id)
+    /*
+     state 는 리덕스 스토어 전체 상태의 객체이고 cart.items 그 안에 슬라이스의 상태
+    */
   );
 
+  //아이템 비어있을 때 문구 출력
   if (!product) {
     return <p>상품을 찾을 수 없습니다.</p>;
   }
 
   const handleAddToCart = () => {
-    const cartItem = { ...product, quantity: 1 }; // quantity 추가
+    const cartItem = { ...product, quantity: 1 }; // quantity 수량 추가
     dispatch(addItem(cartItem)); // Redux에 추가
   };
 
