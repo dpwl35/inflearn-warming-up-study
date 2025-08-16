@@ -1,121 +1,164 @@
-# 02 가위 바위 보 앱
+# 06 비밀번호 생성 앱 만들기
 
-![](./04-display-book-list.gif)
+![](./06-password-generation.gif)
 
 ### 개요
 
-- 기능별 클래스와 메서드 사용하기
+- 조건에 따른 비밀번호 생성 기능 구현
+- Generator, Design Pattern 을 사용해보기
 
 ### 필요한 기능
 
-- 책 리스트 추가
-- 사용자가 값 입력 후 input 필드 초기화 하기
-- 책이 추가&삭제될 때 메세지 1초 보여주기
+- 조건에 따른 비밀번호 생성
+- 생성된 비밀번호 복사 기능
 
 ### 구현
 
-class BookManager 에서는 데이터를 추가,삭제하고 목록을 관리한다.
-
 ```javascript
-class BookUI {
-  // constructor, init , showToast, handleDelete, createTableRow, handleAddBook 메서드 사용
+//문자 범위
+const charSets = {
+  numbers: "0123456789",
+  small: "abcdefghijklmnopqrstuvwxyz",
+  capital: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  symbols: "@!#$&%",
+};
+
+//사용자 체크박스 설정
+function getOptions() {
+  return {
+    numbers: document.getElementById("numbers").checked,
+    small: document.getElementById("small").checked,
+    capital: document.getElementById("capital").checked,
+    symbols: document.getElementById("symbols").checked,
+  };
 }
 ```
 
-class BookUI는 책을 추가하거나 삭제할때 이를 UI에 반영하고 이벤트를 처리한다.
-
 ```javascript
- constructor() {
-    this.bookTitle = document.querySelector('.book-title');
-    this.bookAuthor = document.querySelector('.book-author');
-    this.submitButton = document.querySelector('button.submit');
-    this.tableTbody = document.querySelector('.table .tbody');
-    this.toastsArea = document.querySelector('.toasts');
+createButton.addEventListener("click", () => {
+  const length = parseInt(inputLength.value, 10);
+  const options = getOptions();
 
-    this.bookManager = new BookManager();
+  /*비밀번호 생성 최소 조건 생략 */
 
-    this.init();
-  }
+  //Generator 사용할 때
+  const generatedPassword = generatePassword(length, options);
+
+  //Factory Pattern 사용할 때
+  const generator = PasswordFactory.createPasswordGenerator(options);
+  const generatedPassword = generator.generate(length);
+
+  passwordElement.textContent = generatedPassword;
+});
 ```
 
-DOM 요소들을 선택하고 BookManager 인스턴스를 생성
+사용자가 선택한 비밀번호 길이와 옵션을 전달받아 비밀번호를 생성한다. 위의 설정들과 `shufflePassword(password)` 비밀번호 셔플 함수, `copyToClipboard(text)` 생성된 비밀번호 복사 함수는 같고 비밀번호 생성 과정만 다르다.
+
+### Generator 사용
 
 ```javascript
-init() {
-    this.submitButton.addEventListener('click', this.handleAddBook.bind(this));
+function generatePassword(length, options) {
+  const generator = passwordGenerator(options);
+  let password = "";
+
+  // 선택된 옵션 배열 추가
+  const selectedSets = [];
+  if (options.numbers) selectedSets.push(charSets.numbers);
+  if (options.small) selectedSets.push(charSets.small);
+  if (options.capital) selectedSets.push(charSets.capital);
+  if (options.symbols) selectedSets.push(charSets.symbols);
+
+  // 각 문자 집합에서 하나씩 선택하여 추가
+  selectedSets.forEach((set) => {
+    password += set.charAt(Math.floor(Math.random() * set.length));
+    console.log(password);
+  });
+
+  // 나머지 자리에 대해 랜덤 문자 추가
+  for (let i = password.length; i < length; i++) {
+    password += generator.next().value;
   }
+
+  // 비밀번호를 섞어서 반환
+  return shufflePassword(password);
+}
 ```
 
-사용자가 책을 추가하는 버튼을 누르면 handleAddBook 연결
+`generatePassword(length, options)`함수는 비밀번호를 생성하고 길이를 관리합니다.
+
+- 사용자 설정 옵션 반영:사용자가 선택한 옵션 값에 따라 selectedSets 배열을 만듭니다. 이 배열은 선택된 문자 집합(숫자, 소문자, 대문자, 기호)을 포함합니다.
+- 최소 하나의 문자 포함:selectedSets 배열을 반복하여 각 문자 집합에서 최소한 하나의 문자를 포함시킵니다. 이는 비밀번호가 선택된 옵션을 만족하도록 보장합니다.
+- 남은 길이의 랜덤 문자 추가:나머지 비밀번호 길이에 대해서는 passwordGenerator를 사용하여 랜덤 문자를 생성합니다.
+- 비밀번호 반환: 최종적으로 생성된 비밀번호는 지정된 길이와 사용자 옵션을 반영하여 반환됩니다.
 
 ```javascript
-handleAddBook() {
-    const titleValue = this.bookTitle.value;
-    const authorValue = this.bookAuthor.value;
+function* passwordGenerator(options) {
+  const selectedSets = [];
 
-    if (titleValue && authorValue) {
-      this.bookManager.addBook(titleValue, authorValue);
-      this.createTableRow(
-        titleValue,
-        authorValue,
-        this.bookManager.getBooks().length - 1
-      );
+  if (options.numbers) selectedSets.push(charSets.numbers);
+  if (options.small) selectedSets.push(charSets.small);
+  if (options.capital) selectedSets.push(charSets.capital);
+  if (options.symbols) selectedSets.push(charSets.symbols);
 
-      this.showToast('add');
-
-      this.bookTitle.value = '';
-      this.bookAuthor.value = '';
-    } else {
-      alert('책 이름과 저자 모두 입력해야 합니다.');
-    }
+  while (true) {
+    const randomSet =
+      selectedSets[Math.floor(Math.random() * selectedSets.length)];
+    yield randomSet.charAt(Math.floor(Math.random() * randomSet.length));
   }
+}
 ```
 
-BookManager class 에 책 추가
+`passwordGenerator(options)` 함수는 비밀번호를 생성합니다.
 
-createTableRow 메서드에서 해당 값을 받아 책 이름 / 저자 / 행 삭제 버튼 UI를 만들어준다.
+- 무한 루프: while (true)를 사용하여 passwordGenerator()가 호출될 때 무한 루프를 실행합니다. 이 루프는 무작위 문자를 계속 생성하는 역할을 합니다.
+- 무작위 문자 집합 선택: 선택된 옵션 배열을 파라미터로 받아 randomSet에서 무작위로 하나의 문자 집합을 선택합니다. Math.random()을 사용하여 0과 1 사이의 무작위 소수를 생성한 후, 이를 selectedSets.length와 곱하여 배열의 인덱스를 얻습니다. Math.floor()를 사용하여 소수를 정수로 변환함으로써 유효한 인덱스 범위 내에서 선택이 이루어지도록 합니다.
+- 무작위 문자 선택: 위에서 선택된 문자 집합(randomSet)에서 문자를 선택합니다.예를 들어, 선택된 randomSet이 '0123456789'일 때, Math.random()이 0.65를 반환하면 0.65 \* 10 (randomSet.length) = 6.5 → Math.floor()에 의해 6이 되고charAt(index) 메서드를 사용하여 문자열에서 지정된 인덱스에 있는 문자를 반환합니다.
+- 랜덤 문자 생성 반복: 이 과정을 호출될 때마다 반복합니다.
 
-showToast 메서드를 통해 책 추가 메세지 출력하고 input 필드를 초기화 한다.
+### Factory Pattern 사용
 
 ```javascript
-showToast(actionType) {
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('toasts-message');
+// 비밀번호 생성기 클래스
+class PasswordGenerator {
+  constructor(options) {
+    this.options = options;
+    this.selectedSets = [];
 
-    if (actionType === 'add') {
-      messageDiv.classList.add('add');
-      messageDiv.textContent = '책이 추가되었습니다.';
-    } else if (actionType === 'delete') {
-      messageDiv.classList.add('delete');
-      messageDiv.textContent = '책이 삭제되었습니다.';
-    }
-
-    this.toastsArea.appendChild(messageDiv);
-
-    setTimeout(() => {
-      this.toastsArea.removeChild(messageDiv);
-    }, 1000);
+    if (options.numbers) this.selectedSets.push(charSets.numbers);
+    if (options.small) this.selectedSets.push(charSets.small);
+    if (options.capital) this.selectedSets.push(charSets.capital);
+    if (options.symbols) this.selectedSets.push(charSets.symbols);
   }
-```
 
-showToast 메서드는 현재 책이 추가된건지 삭제된건지 파라미터를 통해 받아 해당 메세지를 출력한다.
+  // 비밀번호 생성
+  generate(length) {
+    let password = "";
 
-```javascript
- handleDelete(button, rowElement, index) {
-    button.addEventListener('click', () => {
-      this.tableTbody.removeChild(rowElement);
-      this.bookManager.removeBook(index);
-      this.showToast('delete');
+    this.selectedSets.forEach((set) => {
+      password += set.charAt(Math.floor(Math.random() * set.length));
     });
+
+    while (password.length < length) {
+      const randomSet =
+        this.selectedSets[Math.floor(Math.random() * this.selectedSets.length)];
+      password += randomSet.charAt(
+        Math.floor(Math.random() * randomSet.length)
+      );
+    }
+
+    return shufflePassword(password);
   }
+}
+
+class PasswordFactory {
+  static createPasswordGenerator(options) {
+    return new PasswordGenerator(options);
+  }
+}
 ```
 
-삭제 메서드에서는 delete를 전달해 책이 삭제되었다는 메세지를 출력한다.
+`PasswordFactory.createPasswordGenerator(options)` 를 호출하여 `PasswordGenerator` 인스턴스를 생성한 후, 인스턴스의 `generate(length)` 메서드를 통해 비밀번호를 생성한다.
 
 <hr>
 
-처음에는 앞에 했던 미션과 같은 흐름으로 코드를 작성했지만, 섹션 6, 7에 해당하는 미션이기 때문에 클래스로 구조를 변경했다. 익숙한 방식대로 작성하려는 경향이 있는 것 같다. 앞으로는 조금 더 생각하고 코드를 짜야겠다. 배운건 활용해야 하니까.
-
-하나의 책임을 가지는 클래스와 명확한 역할을 수행하는 메서드를 쓰고 싶었는데 하나의 클래스에서 너무 많은 메서드를 썼나 싶다.
-
-미션을 하는 건 재밌는데 이렇게 해도 되는 게 맞는가 하는 생각이 든다.
+배운 걸 사용해보고자 Generator 함수와 클래스를 썼다.

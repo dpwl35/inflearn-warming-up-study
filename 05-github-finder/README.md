@@ -1,4 +1,4 @@
-# 02 가위 바위 보 앱
+# 05 Github Finder앱
 
 ![](./05-github-finder.gif)
 

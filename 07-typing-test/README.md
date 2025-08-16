@@ -1,121 +1,154 @@
-# 02 가위 바위 보 앱
+# 07 타이핑 테스트 앱 만들기
 
-![](./04-display-book-list.gif)
+![](./07-typing-test.gif)
 
 ### 개요
 
-- 기능별 클래스와 메서드 사용하기
+- 타이핑 테스트 기능 구현
+- 주어진 시간 내에 문장을 타이핑하고 입력 속도(WPM, CPM)와 정확도를 측정
 
 ### 필요한 기능
 
-- 책 리스트 추가
-- 사용자가 값 입력 후 input 필드 초기화 하기
-- 책이 추가&삭제될 때 메세지 1초 보여주기
+- 타이핑된 값
+- 결과 팝업 보여주기
 
 ### 구현
 
-class BookManager 에서는 데이터를 추가,삭제하고 목록을 관리한다.
+초반에 필요하다고 생각되는 부분들을 셋팅한다.
 
 ```javascript
-class BookUI {
-  // constructor, init , showToast, handleDelete, createTableRow, handleAddBook 메서드 사용
+typingInput.addEventListener("input", () => {
+  const spans = printText.querySelectorAll("span");
+  const userInput = typingInput.value; // 사용자가 입력한 값
+
+  userInputArray = userInput.split("");
+  totalTypedCharacters = userInput.length; // 입력된 문자 수
+
+  // 두 배열을 비교하여 클래스 추가
+  for (let i = 0; i < currentTypingText.length; i++) {
+    if (userInputArray[i] === currentTypingText[i]) {
+      // 맞으면 'complete' 클래스 추가
+      spans[i].classList.add("complete");
+      spans[i].classList.remove("error");
+    } else if (userInputArray[i] !== undefined) {
+      // 'error' 클래스 추가
+      spans[i]?.classList.remove("complete");
+      spans[i].classList.add("error");
+    } else {
+      // 입력이 지워진 경우
+      spans[i]?.classList.remove("complete");
+      spans[i]?.classList.remove("error");
+    }
+  }
+
+  // 오류 계산
+  calculateErrors();
+});
+```
+
+처음에는 input 값을 실시간으로 받고 현재 타이핑 해야 하는 문장과 비교를 했었는데 생각과 달리 정확한 비교가 어려웠다. 그래서 현재 타이핑 해야 하는 글자와 사용자가 입력한 글자를 모두 배열의 요소로 저장하고 비교하는 방법으로 바꾸고 span 요소에 class를 추가해 complete / error 를 표시했다.
+
+```javascript
+// 오류 수 계산
+function calculateErrors() {
+  // 현재 문장의 오류 수
+  currentSentenceErrors = 0;
+
+  // 현재 문장에서의 오류 수를 계산
+  for (let i = 0; i < currentTypingText.length; i++) {
+    if (
+      userInputArray[i] !== currentTypingText[i] &&
+      userInputArray[i] !== undefined
+    ) {
+      currentSentenceErrors++;
+    }
+  }
+
+  // 전체 오류 수 업데이트 (이전 오류 수에 현재 문장 오류 추가)
+  const totalErrorCount = totalErrors + currentSentenceErrors;
+  errorsElement.textContent = totalErrorCount;
+
+  // 정확도 계산
+  calculateAccuracy(totalErrorCount);
 }
 ```
 
-class BookUI는 책을 추가하거나 삭제할때 이를 UI에 반영하고 이벤트를 처리한다.
+원래는 오류 수 계산을 typingInput.addEventListener()의 for문에서 같이 처리했었는데, 다음 문장으로 넘어갈 때 오류 개수가 이상하게 업데이트 되는 바람에 함수로 분리하고 문장 별로 오류 수를 저장하고 업데이트하는 방식으로 변경했다. 오류 개수와 정확도는 화면에 실시간으로 반영되는 값이라 정확도 함수에 오류 수를 넘겨서 같이 업데이트 했는데 지금 보니까 그냥 같은 함수에서 처리해도 됐을 것 같다는 생각이 든다.
 
 ```javascript
- constructor() {
-    this.bookTitle = document.querySelector('.book-title');
-    this.bookAuthor = document.querySelector('.book-author');
-    this.submitButton = document.querySelector('button.submit');
-    this.tableTbody = document.querySelector('.table .tbody');
-    this.toastsArea = document.querySelector('.toasts');
+function loadNextSentence() {
+  // 현재 문장의 오류를 전체 오류에 누적
+  totalErrors += currentSentenceErrors;
+  // 새로운 문장 현재 문장 오류 초기화
+  currentSentenceErrors = 0;
 
-    this.bookManager = new BookManager();
+  currentSentenceIndex++;
 
-    this.init();
+  const nextSentence = TYPINGS[currentSentenceIndex];
+
+  renderTextWithSpans(nextSentence);
+
+  typingInput.value = "";
+  userInputArray = [];
+  typingInput.setAttribute("maxlength", currentTypingText.length);
+}
+
+// 엔터를 눌렀을 때 다음 문장 로드
+typingInput.addEventListener("keydown", (_event) => {
+  if (_event.key === "Enter") {
+    // 기본 엔터 입력 방지
+    _event.preventDefault();
+    if (userInputArray.length === currentTypingText.length) {
+      if (currentSentenceIndex < TYPINGS.length - 1) {
+        // 엔터를 눌렀을 때 다음 문장 로드
+        loadNextSentence();
+      } else {
+        // 마지막 문장일 때 결과 팝업 표시
+        showTypingResult();
+      }
+    }
   }
+});
 ```
 
-DOM 요소들을 선택하고 BookManager 인스턴스를 생성
+다음 문장으로 넘어가는 함수에서는 textarea에 maxlength값을 넣어 타이핑해야 하는 글자 수 이상으로 타이핑하지 못하게 했다. enter을 눌렀을 때 다음 문장으로 바뀌는 방법으로 했더니 다음 문장으로 넘어갔을 때 textarea에 enter가 입력되면서 줄바꿈 처리가 되어서 `_event.preventDefault();` 로 줄바꿈이 되지 않게 했다.
 
 ```javascript
-init() {
-    this.submitButton.addEventListener('click', this.handleAddBook.bind(this));
-  }
-```
-
-사용자가 책을 추가하는 버튼을 누르면 handleAddBook 연결
-
-```javascript
-handleAddBook() {
-    const titleValue = this.bookTitle.value;
-    const authorValue = this.bookAuthor.value;
-
-    if (titleValue && authorValue) {
-      this.bookManager.addBook(titleValue, authorValue);
-      this.createTableRow(
-        titleValue,
-        authorValue,
-        this.bookManager.getBooks().length - 1
-      );
-
-      this.showToast('add');
-
-      this.bookTitle.value = '';
-      this.bookAuthor.value = '';
+function startTimer() {
+  timerInterval = setInterval(() => {
+    if (currentTime > 0) {
+      currentTime--;
+      timeElement.textContent = currentTime;
     } else {
-      alert('책 이름과 저자 모두 입력해야 합니다.');
+      clearInterval(timerInterval);
+      typingInput.disabled = true;
+      showTypingResult();
     }
-  }
+  }, 1000);
+}
 ```
 
-BookManager class 에 책 추가
-
-createTableRow 메서드에서 해당 값을 받아 책 이름 / 저자 / 행 삭제 버튼 UI를 만들어준다.
-
-showToast 메서드를 통해 책 추가 메세지 출력하고 input 필드를 초기화 한다.
+마지막 문장까지 입력하고 enter을 누르면 결과 팝업이 뜨지만 처음 설정해둔 시간이 다 됐을 때도 결과 팝업이 뜬다.
 
 ```javascript
-showToast(actionType) {
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('toasts-message');
+function initializeTypingTest() {
+  calculateTotalCharacters();
 
-    if (actionType === 'add') {
-      messageDiv.classList.add('add');
-      messageDiv.textContent = '책이 추가되었습니다.';
-    } else if (actionType === 'delete') {
-      messageDiv.classList.add('delete');
-      messageDiv.textContent = '책이 삭제되었습니다.';
-    }
+  const firstSentence = TYPINGS[0];
+  renderTextWithSpans(firstSentence);
 
-    this.toastsArea.appendChild(messageDiv);
+  typingInput.setAttribute("maxlength", currentTypingText.length);
 
-    setTimeout(() => {
-      this.toastsArea.removeChild(messageDiv);
-    }, 1000);
-  }
+  errorsElement.textContent = INITIAL_ERRORS;
+  timeElement.textContent = INITIAL_TIME;
+  accuracyElement.textContent = INITIAL_ACCURACY;
+
+  typingInput.value = "";
+}
 ```
 
-showToast 메서드는 현재 책이 추가된건지 삭제된건지 파라미터를 통해 받아 해당 메세지를 출력한다.
-
-```javascript
- handleDelete(button, rowElement, index) {
-    button.addEventListener('click', () => {
-      this.tableTbody.removeChild(rowElement);
-      this.bookManager.removeBook(index);
-      this.showToast('delete');
-    });
-  }
-```
-
-삭제 메서드에서는 delete를 전달해 책이 삭제되었다는 메세지를 출력한다.
+초기 값들도 상수로 선언해서 화면을 초기화 하는 함수에서 사용했다.
 
 <hr>
 
-처음에는 앞에 했던 미션과 같은 흐름으로 코드를 작성했지만, 섹션 6, 7에 해당하는 미션이기 때문에 클래스로 구조를 변경했다. 익숙한 방식대로 작성하려는 경향이 있는 것 같다. 앞으로는 조금 더 생각하고 코드를 짜야겠다. 배운건 활용해야 하니까.
-
-하나의 책임을 가지는 클래스와 명확한 역할을 수행하는 메서드를 쓰고 싶었는데 하나의 클래스에서 너무 많은 메서드를 썼나 싶다.
-
-미션을 하는 건 재밌는데 이렇게 해도 되는 게 맞는가 하는 생각이 든다.
+이번에는 과제를 하기 전에 자바스크립트 명명 규칙을 지켜서 해보기로 했다. 자바스크립트 미션 중에서 제일 오래 걸렸던 미션이다. 처음 구현했을 때 생각했던대로 작동하지 않아서 어떻게 만들어야할지 고민이 많았다. 계속 수정해가며 기능을 완성시키기는 했는데 이게 맞는지.. 어려웠다.

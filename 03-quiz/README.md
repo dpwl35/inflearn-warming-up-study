@@ -1,4 +1,4 @@
-# 02 가위 바위 보 앱
+# 03 퀴즈 앱
 
 ![](./03-quiz.gif)
 
@@ -66,9 +66,8 @@ quizContainer.addEventListener("click", (event) => {
 });
 ```
 
-`handleAnswer(correctAnswer, explanation)`에서 퀴즈의 정답과 설명을 받고 이후 선택된 답을 처리하고 정답 여부와 문제의 해설을 출력해준다.
-
-준다. 다시하기 버튼을 누르면 `resetGame()` 함수를 호출해 게임을 초기화 시키고 다시 시작할 수 있다.
+`handleAnswer(correctAnswer, explanation)`에서 퀴즈의 정답과 설명을 받고 이후 선택된 답을 처리하고 정답 여부와 문제의 해설을 출력해준다.  
+다시하기 버튼을 누르면 `resetGame()` 함수를 호출해 게임을 초기화 시키고 다시 시작할 수 있다.
 
 <hr>
 
